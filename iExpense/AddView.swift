@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct AddView: View {
     @State private var name = ""
@@ -15,7 +16,7 @@ struct AddView: View {
     
     let types = ["Personal", "Business"]
     
-    var expenses: Expenses
+    @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -81,7 +82,7 @@ struct AddView: View {
                             date: selectedDate
                         )
                         
-                        expenses.item.append(item)
+                        modelContext.insert(item)
                         dismiss()
                         
                     } label: {
@@ -95,5 +96,6 @@ struct AddView: View {
 }
 
 #Preview {
-    AddView(expenses: Expenses())
+    AddView()
+        .modelContainer(for: ExpenseItem.self, inMemory: true)
 }
